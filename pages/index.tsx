@@ -35,7 +35,24 @@ export default function Home() {
   const [error, setError] = useState<string | undefined>();
   const [workouts, setWorkouts] = useState<Workout[] | undefined>();
 
-  async function getWeatherFromApi() {
+  useEffect(() => {
+    async function getWorkouts() {
+      try {
+        const response = await fetch('/api/getWorkouts');
+        const body: { workouts: { hits: { hits: Workout[] } } } =
+          await response.json();
+        const outdoorWorkouts = body.workouts.hits.hits.filter((workout) =>
+          workout._source.participationModes.includes('outdoor'),
+        );
+        setWorkouts(outdoorWorkouts);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getWorkouts().catch((err) => console.log(err));
+  }, []);
+
+  async function getWeatherFromApi(objectId: string) {
     const weatherResponse = await fetch('/api/getWeather', {
       method: 'POST',
       headers: {
