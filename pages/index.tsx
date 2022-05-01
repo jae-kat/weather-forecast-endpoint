@@ -111,20 +111,25 @@ export default function Home() {
             );
           })}
 
-        <button
-          onClick={() => {
-            getWeatherFromApi().catch((err) => console.log(err));
-          }}
-        >
-          get weather
-        </button>
-        {weather && (
-          <div>
-            <p>Date: {weather[0].valid_date}</p>
-            <p>Min: {weather[0].min_temp}</p>
-            <p>Max: {weather[0].max_temp}</p>
-            <p>Precipitation: {weather[0].pop}%</p>
-            <p>{weather[0].weather.description}</p>
+        {error && <p>{error}</p>}
+        {forecast && (
+          <div className="forecast">
+            <button onClick={() => setForecast(undefined)}>X Close</button>
+            <p className="city">{forecast.city} </p>
+            <p className="date">{forecast.weather[0].valid_date}</p>
+            <p className="description">
+              {forecast.weather[0].weather.description}
+            </p>
+            <p className="temp">
+              Temperature:
+              <br />
+              <span>Max: ⇧ {forecast.weather[0].max_temp}°C</span>
+              <br />
+              <span>Min: ⇩ {forecast.weather[0].min_temp}°C</span>
+            </p>
+            <p className="rain">
+              Probability of precipitation: {forecast.weather[0].pop}%
+            </p>
           </div>
         )}
       </div>
