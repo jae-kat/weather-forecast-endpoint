@@ -39,10 +39,17 @@ export default async function getWeather(request, response) {
             workoutDate.slice(4)
           ).toString(),
       );
-      response.status(200).json({ weather: dateForecast });
+      // send the activityDate and the forecast in the response body
+      response.status(200).json({
+        weather: dateForecast,
+        activityDate: requestedWorkoutInfo._source.activityDate,
+        city: requestedWorkoutInfo._source.city,
+      });
       return;
     } catch {
-      response.status(404).json({ error: 'Oops, wrong turn' });
+      response
+        .status(404)
+        .json({ error: 'Oh no, something went wrong getting your forecast' });
       return;
     }
   }
