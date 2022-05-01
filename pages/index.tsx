@@ -1,5 +1,12 @@
 import Head from 'next/head';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { outdoorWorkoutStyles } from '../styles/indexStyles';
+
+type ApiWeatherResponse = {
+  weather: Forecast[];
+  activityDate: { objectId: string };
+  city: string;
+};
 
 type Forecast = {
   min_temp: string;
@@ -9,8 +16,24 @@ type Forecast = {
   weather: { description: string };
 };
 
+type Workout = {
+  _source: {
+    description: string;
+    name: string;
+    activityDate: {
+      start: { iso: string };
+      objectId: string;
+    };
+    partner: { name: string };
+    participationModes: string[];
+    city: string;
+  };
+};
+
 export default function Home() {
-  const [weather, setWeather] = useState<Forecast[] | undefined>();
+  const [forecast, setForecast] = useState<ApiWeatherResponse | undefined>();
+  const [error, setError] = useState<string | undefined>();
+  const [workouts, setWorkouts] = useState<Workout[] | undefined>();
 
   async function getWeatherFromApi() {
     const weatherResponse = await fetch('/api/getWeather', {
@@ -20,9 +43,14 @@ export default function Home() {
       },
       body: JSON.stringify({ objectId: 'O5oFGZDqPP' }),
     });
-    const weatherBody = await weatherResponse.json();
-    setWeather(weatherBody.weather);
-    console.log('weather: ', weather);
+    const weatherBody: { error: string } | ApiWeatherResponse =
+      await weatherResponse.json();
+    console.log('weatherBody', weatherBody);
+    if ('error' in weatherBody) {
+      setError(weatherBody.error);
+      return;
+    }
+    setForecast(weatherBody);
   }
 
   return (
