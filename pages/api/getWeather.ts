@@ -1,6 +1,12 @@
+import { NextApiRequest, NextApiResponse } from 'next';
+import { Forecast, Workout } from '../';
+
 require('dotenv-safe').config();
 
-export default async function getWeather(request, response) {
+export default async function getWeather(
+  request: NextApiRequest,
+  response: NextApiResponse,
+) {
   if (request.method === 'POST') {
     //
     try {
@@ -8,7 +14,8 @@ export default async function getWeather(request, response) {
       const workoutResponse = await fetch(
         'https://s3.eu-west-1.amazonaws.com/dev-challenges.myclubs.com/frontend/frontend_challenge_activities.json',
       );
-      const workoutBody = await workoutResponse.json();
+      const workoutBody: { hits: { hits: Workout[] } } | undefined =
+        await workoutResponse.json();
       if (!workoutBody) {
         response.json({ error: 'Failed to fetch the workouts' });
         return;
@@ -17,6 +24,10 @@ export default async function getWeather(request, response) {
       const requestedWorkoutInfo = workoutBody.hits.hits.find(
         (item) => item._source.activityDate.objectId === request.body.objectId,
       );
+      if (!requestedWorkoutInfo) {
+        response.json({ error: "Can't find your workout" });
+        return;
+      }
       // get the date of the workout
       const workoutDate =
         requestedWorkoutInfo._source.activityDate.start.iso.slice(0, 10);
@@ -30,7 +41,8 @@ export default async function getWeather(request, response) {
       const forecastResponse = await fetch(
         `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${workoutLocationLat}&lon=${workoutLocationLon}&key=${process.env.API_KEY}`,
       );
-      const forecastBody = await forecastResponse.json();
+      const forecastBody: { data: Forecast[] } | undefined =
+        await forecastResponse.json();
 
       if (!forecastBody) {
         response.json({ error: 'Failed to fetch the weather forecast' });
