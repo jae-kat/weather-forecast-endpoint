@@ -65,6 +65,7 @@ export default function Home() {
         await weatherResponse.json();
       if ('error' in weatherBody) {
         setError(weatherBody.error);
+        console.log(weatherBody.error);
         return;
       }
       setForecast(weatherBody);
