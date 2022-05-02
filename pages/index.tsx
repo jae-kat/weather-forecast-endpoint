@@ -8,7 +8,7 @@ type ApiWeatherResponse = {
   city: string;
 };
 
-type Forecast = {
+export type Forecast = {
   min_temp: string;
   max_temp: string;
   pop: string;
@@ -16,7 +16,7 @@ type Forecast = {
   weather: { description: string };
 };
 
-type Workout = {
+export type Workout = {
   _source: {
     description: string;
     name: string;
@@ -27,6 +27,10 @@ type Workout = {
     partner: { name: string };
     participationModes: string[];
     city: string;
+    location: {
+      latitude: string;
+      longitude: string;
+    };
   };
 };
 
