@@ -7,7 +7,7 @@ export default async function getWeather(
   request: NextApiRequest,
   response: NextApiResponse,
 ) {
-  if (request.method === 'POST') {
+  if (request.method === 'GET') {
     //
     try {
       // get the workouts
@@ -22,7 +22,7 @@ export default async function getWeather(
       }
       // get the single workout that we need the forecast for
       const requestedWorkoutInfo = workoutBody.hits.hits.find(
-        (item) => item._source.activityDate.objectId === request.body.objectId,
+        (item) => item._source.activityDate.objectId === 'sBgJxinHUh',
       );
       if (!requestedWorkoutInfo) {
         response.json({ error: "Can't find your workout" });

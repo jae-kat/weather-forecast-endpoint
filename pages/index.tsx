@@ -56,15 +56,15 @@ export default function Home() {
     getWorkouts().catch((err) => console.log(err));
   }, []);
 
-  async function getWeatherFromApi(objectId: string) {
+  async function getWeatherFromApi() {
     try {
-      const weatherResponse = await fetch('/api/getWeather', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ objectId: objectId }),
-      });
+      const weatherResponse = await fetch('/api/getWeather');
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ objectId: objectId }),
+      // });
       const weatherBody: { error: string } | ApiWeatherResponse =
         await weatherResponse.json();
       if ('error' in weatherBody) {
