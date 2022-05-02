@@ -111,11 +111,7 @@ export default function Home() {
                 </p>
                 <p className="city">{workout._source.city}</p>
                 <h2>{workout._source.name}</h2>
-                <button
-                  onClick={() =>
-                    getWeatherFromApi(workout._source.activityDate.objectId)
-                  }
-                >
+                <button onClick={() => getWeatherFromApi()}>
                   WEATHER FORECAST
                 </button>
               </div>
