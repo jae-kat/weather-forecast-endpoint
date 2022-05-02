@@ -37,6 +37,11 @@ export default async function getWeather(
       const workoutLocationLon =
         requestedWorkoutInfo._source.location.longitude;
 
+      // for debugging netlify
+      if (!process.env.API_KEY) {
+        response.json({ error: 'Problem using the environment variables' });
+        return;
+      }
       // get the weather forecast for the specific city
       const forecastResponse = await fetch(
         `https://api.weatherbit.io/v2.0/forecast/daily?&lat=${workoutLocationLat}&lon=${workoutLocationLon}&key=${process.env.API_KEY}`,
