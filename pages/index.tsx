@@ -65,18 +65,17 @@ export default function Home() {
         },
         body: JSON.stringify({ objectId: objectId }),
       });
-      console.log('TEST 2: ', weatherResponse);
       const weatherBody: { error: string } | ApiWeatherResponse =
         await weatherResponse.json();
+
       if ('error' in weatherBody) {
         setError(weatherBody.error);
-        console.log(weatherBody.error);
         return;
       }
-      console.log('TEST 1: ', weatherBody);
+
       setForecast(weatherBody);
     } catch (err) {
-      console.log('Error fetching the weather forecast: ', err);
+      setError('Error fetching the weather forecast');
     }
   }
 
@@ -93,7 +92,7 @@ export default function Home() {
 
       <div css={outdoorWorkoutStyles}>
         <h1>OUTDOOR CLASSES</h1>
-
+        {/* {error && <p>{error}</p>} */}
         {workouts &&
           workouts.map((workout) => {
             return (
@@ -124,7 +123,6 @@ export default function Home() {
             );
           })}
 
-        {error && <p>{error}</p>}
         {forecast && (
           <div className="forecast">
             <button onClick={() => setForecast(undefined)}>X Close</button>
