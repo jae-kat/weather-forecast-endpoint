@@ -4,6 +4,7 @@ const nextConfig = {
   experimental: {
     emotion: true,
   },
+  target: 'serverless',
 };
 
 module.exports = nextConfig;
