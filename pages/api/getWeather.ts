@@ -7,7 +7,7 @@ export default async function getWeather(
   request: NextApiRequest,
   response: NextApiResponse,
 ) {
-  if (request.method === 'GET') {
+  if (request.method === 'POST') {
     //
     try {
       // get the workouts
@@ -22,10 +22,10 @@ export default async function getWeather(
       }
       // get the single workout that we need the forecast for
       const requestedWorkoutInfo = workoutBody.hits.hits.find(
-        (item) => item._source.activityDate.objectId === 'sBgJxinHUh',
+        (item) => item._source.activityDate.objectId === request.body.objectId,
       );
       if (!requestedWorkoutInfo) {
-        response.json({ error: "Can't find your workout" });
+        response.status(404).json({ error: "Can't find your workout" });
         return;
       }
       // get the date of the workout
@@ -39,7 +39,9 @@ export default async function getWeather(
 
       // for debugging netlify
       if (!process.env.API_KEY) {
-        response.json({ error: 'Problem using the environment variables' });
+        response
+          .status(502)
+          .json({ error: 'Problem using the environment variables' });
         return;
       }
       // get the weather forecast for the specific city
@@ -50,7 +52,9 @@ export default async function getWeather(
         await forecastResponse.json();
 
       if (!forecastBody) {
-        response.json({ error: 'Failed to fetch the weather forecast' });
+        response
+          .status(404)
+          .json({ error: 'Failed to fetch the weather forecast' });
         return;
       }
 
