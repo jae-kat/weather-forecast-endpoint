@@ -71,9 +71,10 @@ export default async function getWeather(
       );
       // send the activityDate and the forecast in the response body
       response.status(200).json({
-        weather: dateForecast[0],
-        activityDate: requestedWorkoutInfo._source.activityDate,
-        city: requestedWorkoutInfo._source.city,
+        error: 'Testing if this is returned',
+        // weather: dateForecast[0],
+        // activityDate: requestedWorkoutInfo._source.activityDate,
+        // city: requestedWorkoutInfo._source.city,
       });
       return;
     } catch {
