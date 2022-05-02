@@ -65,6 +65,7 @@ export default function Home() {
         },
         body: JSON.stringify({ objectId: objectId }),
       });
+      console.log('TEST 2: ', weatherResponse);
       const weatherBody: { error: string } | ApiWeatherResponse =
         await weatherResponse.json();
       if ('error' in weatherBody) {
@@ -72,6 +73,7 @@ export default function Home() {
         console.log(weatherBody.error);
         return;
       }
+      console.log('TEST 1: ', weatherBody);
       setForecast(weatherBody);
     } catch (err) {
       console.log('Error fetching the weather forecast: ', err);
