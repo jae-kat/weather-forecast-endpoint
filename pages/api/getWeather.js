@@ -50,7 +50,7 @@ export default async function getWeather(request, response) {
       );
       // send the activityDate and the forecast in the response body
       response.status(200).json({
-        weather: dateForecast,
+        weather: dateForecast[0],
         activityDate: requestedWorkoutInfo._source.activityDate,
         city: requestedWorkoutInfo._source.city,
       });

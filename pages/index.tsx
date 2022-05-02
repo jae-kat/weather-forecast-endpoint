@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { outdoorWorkoutStyles } from '../styles/indexStyles';
 
 type ApiWeatherResponse = {
-  weather: Forecast[];
+  weather: Forecast;
   activityDate: { objectId: string };
   city: string;
 };
@@ -123,19 +123,19 @@ export default function Home() {
           <div className="forecast">
             <button onClick={() => setForecast(undefined)}>X Close</button>
             <p className="city">{forecast.city} </p>
-            <p className="date">{forecast.weather[0].valid_date}</p>
+            <p className="date">{forecast.weather.valid_date}</p>
             <p className="description">
-              {forecast.weather[0].weather.description}
+              {forecast.weather.weather.description}
             </p>
             <p className="temp">
               Temperature:
               <br />
-              <span>Max: ⇧ {forecast.weather[0].max_temp}°C</span>
+              <span>Max: ⇧ {forecast.weather.max_temp}°C</span>
               <br />
-              <span>Min: ⇩ {forecast.weather[0].min_temp}°C</span>
+              <span>Min: ⇩ {forecast.weather.min_temp}°C</span>
             </p>
             <p className="rain">
-              Probability of precipitation: {forecast.weather[0].pop}%
+              Probability of precipitation: {forecast.weather.pop}%
             </p>
           </div>
         )}
