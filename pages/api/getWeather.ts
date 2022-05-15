@@ -30,8 +30,40 @@ export default async function getWeather(
         return;
       }
       // get the date of the workout
-      const workoutDate =
-        requestedWorkoutInfo._source.activityDate.start.iso.slice(0, 10);
+      // this only worked for a little while, because the example dates, per chance, lined up with the current date
+      // const workoutDate =
+      // requestedWorkoutInfo._source.activityDate.start.iso.slice(0, 10);
+
+      // handle the example data from 2021
+      // instead, use the next few days to get a forecast
+      const exampleDate =
+        requestedWorkoutInfo._source.activityDate.start.iso.slice(8, 10);
+      let workoutDate: string;
+
+      const today = new Date();
+      const futureDate = new Date(today);
+
+      if (exampleDate === '13') {
+        workoutDate = new Date(futureDate.setDate(futureDate.getDate() + 1))
+          .toISOString()
+          .slice(0, 10);
+      } else if (exampleDate === '14') {
+        workoutDate = new Date(futureDate.setDate(futureDate.getDate() + 2))
+          .toISOString()
+          .slice(0, 10);
+      } else if (exampleDate === '15') {
+        workoutDate = new Date(futureDate.setDate(futureDate.getDate() + 3))
+          .toISOString()
+          .slice(0, 10);
+      } else if (exampleDate === '16') {
+        workoutDate = new Date(futureDate.setDate(futureDate.getDate() + 4))
+          .toISOString()
+          .slice(0, 10);
+      } else {
+        workoutDate = new Date(futureDate.setDate(futureDate.getDate() + 5))
+          .toISOString()
+          .slice(0, 10);
+      }
 
       // get the city of the workout
       const workoutLocationLat = requestedWorkoutInfo._source.location.latitude;
@@ -64,11 +96,13 @@ export default async function getWeather(
         (weather) =>
           weather.valid_date ===
           // BUT these dates are in the past, so add one year to the date
-          (
-            Number(workoutDate.slice(0, 4)) +
-            1 +
-            workoutDate.slice(4)
-          ).toString(),
+          // this only worked for a little while, because the example dates, per chance, lined up with the current date
+          // (
+          //   Number(workoutDate.slice(0, 4)) +
+          //   1 +
+          //   workoutDate.slice(4)
+          // ).toString(),
+          workoutDate,
       );
       // send the activityDate and the forecast in the response body
       response.status(200).json({
