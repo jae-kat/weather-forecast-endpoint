@@ -92,7 +92,7 @@ export default function Home() {
 
       <div css={outdoorWorkoutStyles}>
         <h1>OUTDOOR CLASSES</h1>
-        {/* {error && <p>{error}</p>} */}
+        {error && <p>{error}</p>}
         {workouts &&
           workouts.map((workout) => {
             return (
